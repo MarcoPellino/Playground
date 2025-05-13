@@ -1,0 +1,1 @@
+﻿Esempio di implementazione di un tariffario.
