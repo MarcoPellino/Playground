@@ -16,7 +16,7 @@ namespace RateTablesSample.Tests
         public void GetPrice_NoRules_ReturnsBasePrice()
         {
             // Impostazioni
-            var travel = new Travel { StartLocation = "Jesi", EndLocation = "Senigallia", Date = DateTime.Now, BasePrice = 50 };
+            var travel = new Travel { BasePrice = 50 };
             var rules = new List<Rule>();
             var pricingService = new PricingService();
 
@@ -160,5 +160,107 @@ namespace RateTablesSample.Tests
             Assert.Equal(25, result);
         }
 
+
+        [Fact]
+        public void GetPrice_ThreeSequentialModifiers_AllAppliedInOrder()
+        {
+            // Arrange
+            var travel = new Travel { BasePrice = 100 };
+
+            // Prezzo base : 100
+            // prima regola + 10 = 110
+            // seconda regola * 2 = 220
+            // terza regola - 20 = 200
+
+            var rules = new List<Rule>
+            {
+                new Rule
+                {
+                    ShouldApply = () => true,
+                    Modifier = new Modifier
+                    {
+                        Operator = ModifierOperators.Add,
+                        Value = 10,
+                        StopApplyOthers = false
+                    }
+                },
+                new Rule
+                {
+                    ShouldApply = () => true,
+                    Modifier = new Modifier
+                    {
+                        Operator = ModifierOperators.Multiply,
+                        Value = 2,
+                        StopApplyOthers = false
+                    }
+                },
+                new Rule
+                {
+                    ShouldApply = () => true,
+                    Modifier = new Modifier
+                    {
+                        Operator = ModifierOperators.Substract,
+                        Value = 20,
+                        StopApplyOthers = false
+                    }
+                }
+            };
+
+            var service = new PricingService();
+
+            // Act
+            var result = service.GetPrice(travel, rules);
+
+            // Assert
+            Assert.Equal(200, result);
+        }
+
+        [Fact]
+        public void GetPrice_FlatModifierStopsFurtherRules_OnlyUpToFlatApplied()
+        {
+            // Arrange
+            var travel = new Travel { BasePrice = 100 };
+            var rules = new List<Rule>
+            {
+                new Rule
+                {
+                    ShouldApply = () => true,
+                    Modifier = new Modifier
+                    {
+                        Operator = ModifierOperators.Add,
+                        Value = 10,
+                        StopApplyOthers = false
+                    }
+                },
+                new Rule
+                {
+                    ShouldApply = () => true,
+                    Modifier = new Modifier
+                    {
+                        Operator = ModifierOperators.Flat,
+                        Value = 50,
+                        StopApplyOthers = true
+                    }
+                },
+                new Rule
+                {
+                    ShouldApply = () => true,
+                    Modifier = new Modifier
+                    {
+                        Operator = ModifierOperators.Multiply,
+                        Value = 2,
+                        StopApplyOthers = false
+                    }
+                }
+            };
+
+            var service = new PricingService();
+
+            // Act
+            var result = service.GetPrice(travel, rules);
+
+            // Assert
+            Assert.Equal(50, result);
+        }
     }
 }
