@@ -11,7 +11,24 @@ namespace RateTablesSample.BOL
     {
         public decimal GetPrice(Travel travel, List<Rule> travelRules)
         {
-            return 0;
+            decimal price = travel.BasePrice;
+
+            foreach (var rule in travelRules) 
+            {
+                if(rule.ShouldApply(travel)) 
+                {
+                    // applico la regola
+                    price = rule.Modifier.Apply(price);
+
+                    // se il modificatore blocca l'applicazione di altri modificatori esco dal ciclo
+                    if(rule.Modifier.StopApplyOthers)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return price;
         }
     }
 }
