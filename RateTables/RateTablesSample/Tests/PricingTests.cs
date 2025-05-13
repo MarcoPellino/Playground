@@ -35,7 +35,6 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier { Operator = ModifierOperators.Add, Value = 10 }
                 }
             };
@@ -54,7 +53,6 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier { Operator = ModifierOperators.Substract, Value = 10 }
                 }
             };
@@ -73,7 +71,6 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier { Operator = ModifierOperators.Multiply, Value = 2 }
                 }
             };
@@ -92,7 +89,6 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier { Operator = ModifierOperators.Divide, Value = 2 }
                 }
             };
@@ -111,7 +107,6 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier { Operator = ModifierOperators.AddPercentage, Value = 10 }
                 }
             };
@@ -130,7 +125,6 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier { Operator = ModifierOperators.RemovePercentage, Value = 10 }
                 }
             };
@@ -149,7 +143,6 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier { Operator = ModifierOperators.Flat, Value = 25 }
                 }
             };
@@ -176,7 +169,6 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Add,
@@ -186,7 +178,6 @@ namespace RateTablesSample.Tests
                 },
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Multiply,
@@ -196,7 +187,6 @@ namespace RateTablesSample.Tests
                 },
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Substract,
@@ -224,7 +214,6 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Add,
@@ -234,7 +223,6 @@ namespace RateTablesSample.Tests
                 },
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Flat,
@@ -244,7 +232,6 @@ namespace RateTablesSample.Tests
                 },
                 new Rule
                 {
-                    ShouldApply = () => true,
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Multiply,
