@@ -249,5 +249,125 @@ namespace RateTablesSample.Tests
             // Assert
             Assert.Equal(50, result);
         }
+
+        [Fact]
+        public void GetPrice_ComplexScenario_WithSelectiveRuleApplication()
+        {
+            // Arrange
+            var travelDate = new DateTime(2025, 5, 14); // Mercoledì
+            var travel = new Travel
+            {
+                StartLocation = "Jesi",
+                EndLocation = "Senigallia",
+                Date = travelDate,
+                BasePrice = 100
+            };
+
+            var rules = new List<Rule>
+        {
+        // Rule 1: match StartLocation only - should apply
+        new Rule
+        {
+            StartLocationMatch = "Jesi",
+            Modifier = new Modifier
+            {
+                Operator = ModifierOperators.Add,
+                Value = 10,
+                StopApplyOthers = false
+            }
+        },
+
+        // Rule 2: unrelated - should not apply
+        new Rule
+        {
+            StartLocationMatch = "Firenze",
+            Modifier = new Modifier
+            {
+                Operator = ModifierOperators.Add,
+                Value = 999,
+                StopApplyOthers = false
+            }
+            },
+
+        // Rule 3: match EndLocation and DayOfWeek - should apply
+        new Rule
+        {
+            EndLocationMatch = "Senigallia",
+            DayOfWeekMatch = DayOfWeek.Wednesday,
+            Modifier = new Modifier
+            {
+                Operator = ModifierOperators.Substract,
+                Value = 5,
+                StopApplyOthers = false
+            }
+        },
+
+        // Rule 4: match nothing - should NOT apply
+        new Rule
+        {
+            StartLocationMatch = "Senigallia",
+            EndLocationMatch = "Roma",
+            DayOfWeekMatch = DayOfWeek.Friday,
+            Modifier = new Modifier
+            {
+                Operator = ModifierOperators.Flat,
+                Value = 1,
+                StopApplyOthers = false
+            }
+        },
+
+        // Rule 5: only StartLocation match fails - should NOT apply
+        new Rule
+        {
+            StartLocationMatch = "Ancona",
+            EndLocationMatch = "Senigallia",
+            Modifier = new Modifier
+            {
+                Operator = ModifierOperators.AddPercentage,
+                Value = 50,
+                StopApplyOthers = true
+            }
+        },
+
+        // Rule 6: only DayOfWeek mismatch - should NOT apply
+        new Rule
+        {
+            StartLocationMatch = "Jesi",
+            EndLocationMatch = "Senigallia",
+            DayOfWeekMatch = DayOfWeek.Sunday,
+            Modifier = new Modifier
+            {
+                Operator = ModifierOperators.RemovePercentage,
+                Value = 10,
+                StopApplyOthers = false
+            }
+        },
+
+        // Rule 7: match DayOfWeek only - should apply
+        new Rule
+        {
+            DayOfWeekMatch = DayOfWeek.Wednesday,
+            Modifier = new Modifier
+            {
+                Operator = ModifierOperators.Multiply,
+                Value = 2,
+                StopApplyOthers = false
+            }
+        }
+        };
+
+            var service = new PricingService();
+
+            // Act
+            var result = service.GetPrice(travel, rules);
+
+            // Assert
+            // BasePrice: 100
+            // Rule 1: +10 → 110
+            // Rule 3: -5 → 105
+            // Rule 7: *2 → 210
+            Assert.Equal(210, result);
+        }
+
     }
 }
