@@ -1,6 +1,9 @@
 ﻿using RateTablesSample.BOL;
 using RateTablesSample.Constants;
+using RateTablesSample.Interfaces;
 using RateTablesSample.Models;
+using RateTablesSample.Models.Rules.Base;
+using RateTablesSample.Models.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +38,7 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier { Operator = ModifierOperators.Add, Value = 10 }
                 }
             };
@@ -53,6 +57,7 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier { Operator = ModifierOperators.Substract, Value = 10 }
                 }
             };
@@ -71,6 +76,7 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier { Operator = ModifierOperators.Multiply, Value = 2 }
                 }
             };
@@ -89,6 +95,7 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier { Operator = ModifierOperators.Divide, Value = 2 }
                 }
             };
@@ -107,6 +114,7 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier { Operator = ModifierOperators.AddPercentage, Value = 10 }
                 }
             };
@@ -125,6 +133,7 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier { Operator = ModifierOperators.RemovePercentage, Value = 10 }
                 }
             };
@@ -142,7 +151,7 @@ namespace RateTablesSample.Tests
             var rules = new List<Rule>
             {
                 new Rule
-                {
+                {ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier { Operator = ModifierOperators.Flat, Value = 25 }
                 }
             };
@@ -169,6 +178,7 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Add,
@@ -178,6 +188,7 @@ namespace RateTablesSample.Tests
                 },
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Multiply,
@@ -187,6 +198,7 @@ namespace RateTablesSample.Tests
                 },
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Substract,
@@ -214,6 +226,7 @@ namespace RateTablesSample.Tests
             {
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Add,
@@ -223,6 +236,7 @@ namespace RateTablesSample.Tests
                 },
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Flat,
@@ -232,6 +246,7 @@ namespace RateTablesSample.Tests
                 },
                 new Rule
                 {
+                    ApplicationRule = new TrueRuleSpecification(),
                     Modifier = new Modifier
                     {
                         Operator = ModifierOperators.Multiply,
@@ -263,98 +278,107 @@ namespace RateTablesSample.Tests
                 BasePrice = 100
             };
 
-            var rules = new List<Rule>
-        {
-        // Rule 1: match StartLocation only - should apply
-        new Rule
-        {
-            StartLocationMatch = "Jesi",
-            Modifier = new Modifier
-            {
-                Operator = ModifierOperators.Add,
-                Value = 10,
-                StopApplyOthers = false
-            }
-        },
+            // Rule 1: tutti i viaggi che partono da Jesi, Ancona, Senigallia, Arcevia
+            var startRule = new StartFromRuleSpecification("Jesi");
+            var ruleBuilder = new RuleBuilder<Travel>(startRule);
+            ruleBuilder = ruleBuilder.Or(new StartFromRuleSpecification("Ancona"));
+            ruleBuilder = ruleBuilder.Or(new StartFromRuleSpecification("Senigallia"));
+            ruleBuilder = ruleBuilder.Or(new StartFromRuleSpecification("Arcevia"));
 
-        // Rule 2: unrelated - should not apply
-        new Rule
-        {
-            StartLocationMatch = "Firenze",
-            Modifier = new Modifier
+            // Rule 2: tutti i viaggi che partono da Jesi e finiscono ad Ancona, Roma, Firenze -> da non applicare
+            var startRuleEndRule = new StartFromRuleSpecification("Jesi");
+            var ruleBuilderEndRule = new RuleBuilder<Travel>(startRuleEndRule).And(
+                    new RuleBuilder<Travel>(new EndAtRuleSpecification("Ancona"))
+                        .Or(new EndAtRuleSpecification("Roma"))
+                        .Or(new EndAtRuleSpecification("Firenze"))
+                        .Build()
+                );
+
+            // Rule 3: tutti i viaggi del mercoledì -> da  applicare
+            var dayRule = new DayOfWeekRuleSpecification(DayOfWeek.Wednesday);
+
+            // Rule 4: tutti i viaggi che partono da Senigallia il venerdì -> non applicare
+            var senigalliaRuleFriday = new StartFromRuleSpecification("Senigallia");
+            var ruleBuilderSenigalliaFriday = new RuleBuilder<Travel>(senigalliaRuleFriday).And(new DayOfWeekRuleSpecification(DayOfWeek.Friday));
+
+            // Rule 4: tutti i viaggi che partono da Jesi e arrivano in Ancona, nei giorni Lunedì, Martedì, Mercoledì
+            var anconaRule = new StartFromRuleSpecification("Jesi");
+            var ruleBuilderAncona = new RuleBuilder<Travel>(anconaRule)
+                .And(new EndAtRuleSpecification("Ancona"))
+                .And(
+                    new RuleBuilder<Travel>(new DayOfWeekRuleSpecification(DayOfWeek.Monday))
+                        .Or(new DayOfWeekRuleSpecification(DayOfWeek.Tuesday))
+                        .Or(new DayOfWeekRuleSpecification(DayOfWeek.Wednesday))
+                        .Build()
+            );
+
+            // Rule 5: tutti i viaggi che finiscono in Ancona, Senigallia o Jesi
+            var endRule = new EndAtRuleSpecification("Ancona");
+            var endRuleAnconaJesiSenBuild = new RuleBuilder<Travel>(endRule)
+                .Or(new EndAtRuleSpecification("Senigallia"))
+                .Or(new EndAtRuleSpecification("Jesi"));
+
+            var rules = new List<Rule>
             {
-                Operator = ModifierOperators.Add,
-                Value = 999,
-                StopApplyOthers = false
-            }
+            new Rule
+            {
+                ApplicationRule = ruleBuilder.Build(),
+                Modifier = new Modifier
+                {
+                    Operator = ModifierOperators.Add,
+                    Value = 10,
+                    StopApplyOthers = false
+                }
             },
 
-        // Rule 3: match EndLocation and DayOfWeek - should apply
-        new Rule
-        {
-            EndLocationMatch = "Senigallia",
-            DayOfWeekMatch = DayOfWeek.Wednesday,
-            Modifier = new Modifier
+            // Rule 2: non si applica
+            new Rule
             {
-                Operator = ModifierOperators.Substract,
-                Value = 5,
-                StopApplyOthers = false
-            }
-        },
+                ApplicationRule = ruleBuilderEndRule.Build(),
+                Modifier = new Modifier
+                {
+                    Operator = ModifierOperators.Add,
+                    Value = 999,
+                    StopApplyOthers = false
+                }
+                },
 
-        // Rule 4: match nothing - should NOT apply
-        new Rule
-        {
-            StartLocationMatch = "Senigallia",
-            EndLocationMatch = "Roma",
-            DayOfWeekMatch = DayOfWeek.Friday,
-            Modifier = new Modifier
+            // Rule 3: match EndLocation and DayOfWeek - should apply
+            new Rule
             {
-                Operator = ModifierOperators.Flat,
-                Value = 1,
-                StopApplyOthers = false
-            }
-        },
+                ApplicationRule = dayRule,
+                Modifier = new Modifier
+                {
+                    Operator = ModifierOperators.Substract,
+                    Value = 5,
+                    StopApplyOthers = false
+                }
+            },
 
-        // Rule 5: only StartLocation match fails - should NOT apply
-        new Rule
-        {
-            StartLocationMatch = "Ancona",
-            EndLocationMatch = "Senigallia",
-            Modifier = new Modifier
+            // Rule 4: match inizio viaggio e giorno settimana ma non arrivo - should NOT apply
+            new Rule
             {
-                Operator = ModifierOperators.AddPercentage,
-                Value = 50,
-                StopApplyOthers = true
-            }
-        },
+                ApplicationRule = ruleBuilderAncona.Build(),
+                Modifier = new Modifier
+                {
+                    Operator = ModifierOperators.Flat,
+                    Value = 1,
+                    StopApplyOthers = false
+                }
+            },
 
-        // Rule 6: only DayOfWeek mismatch - should NOT apply
-        new Rule
-        {
-            StartLocationMatch = "Jesi",
-            EndLocationMatch = "Senigallia",
-            DayOfWeekMatch = DayOfWeek.Sunday,
-            Modifier = new Modifier
+            // Rule 5: match DayOfWeek only - should apply
+            new Rule
             {
-                Operator = ModifierOperators.RemovePercentage,
-                Value = 10,
-                StopApplyOthers = false
+                ApplicationRule = endRuleAnconaJesiSenBuild.Build(),
+                Modifier = new Modifier
+                {
+                    Operator = ModifierOperators.Multiply,
+                    Value = 2,
+                    StopApplyOthers = false
+                }
             }
-        },
-
-        // Rule 7: match DayOfWeek only - should apply
-        new Rule
-        {
-            DayOfWeekMatch = DayOfWeek.Wednesday,
-            Modifier = new Modifier
-            {
-                Operator = ModifierOperators.Multiply,
-                Value = 2,
-                StopApplyOthers = false
-            }
-        }
-        };
+            };
 
             var service = new PricingService();
 
@@ -365,7 +389,7 @@ namespace RateTablesSample.Tests
             // BasePrice: 100
             // Rule 1: +10 → 110
             // Rule 3: -5 → 105
-            // Rule 7: *2 → 210
+            // Rule 5: *2 → 210
             Assert.Equal(210, result);
         }
 
