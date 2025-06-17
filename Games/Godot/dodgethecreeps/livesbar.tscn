@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://0ipkp7e0x8a4"]
+
+[ext_resource type="PackedScene" uid="uid://bymypn7emim3s" path="res://heart.tscn" id="1_f4q6g"]
+[ext_resource type="Script" uid="uid://c44s42v6pmjfh" path="res://livesbar.gd" id="1_m7cqf"]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_m7cqf")
+
+[node name="TextureRect" parent="." instance=ExtResource("1_f4q6g")]
+layout_mode = 2
+
+[node name="TextureRect2" parent="." instance=ExtResource("1_f4q6g")]
+layout_mode = 2
+
+[node name="TextureRect3" parent="." instance=ExtResource("1_f4q6g")]
+layout_mode = 2

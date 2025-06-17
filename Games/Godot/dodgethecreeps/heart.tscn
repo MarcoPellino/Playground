@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bymypn7emim3s"]
+
+[ext_resource type="Texture2D" uid="uid://byluokc4lmi6q" path="res://art/heart.png" id="1_cixvg"]
+
+[node name="TextureRect" type="TextureRect"]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_cixvg")
+metadata/_edit_group_ = true
