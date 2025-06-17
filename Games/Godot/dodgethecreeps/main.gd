@@ -58,3 +58,7 @@ func _on_score_timer_timeout():
 func _on_start_timer_timeout():
 	$MobTimer.start()
 	$ScoreTimer.start()
+
+func _on_hud_goto_leaderboard():
+	var leaderboard_scene = preload("res://leaderboard.tscn").instantiate()
+	$OverlayUI.add_child(leaderboard_scene)
