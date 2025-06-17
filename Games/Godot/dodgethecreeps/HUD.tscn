@@ -80,7 +80,6 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("2_vow1y")
 theme_override_font_sizes/font_size = 32
-shortcut = SubResource("Shortcut_vow1y")
 text = "Leaderboard"
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
