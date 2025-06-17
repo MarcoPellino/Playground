@@ -4,6 +4,7 @@ signal hit
 
 @export var speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.
+var isImmune = false
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -39,6 +40,12 @@ func _process(delta):
 
 
 func _on_body_entered(body: Node2D) -> void:
+	if (isImmune):
+		return
+	
+	$Immunity.start()
+	$AnimatedSprite2D.material.set("shader_parameter/immune", true)# attiva effetto
+	isImmune = true
 	hit.emit()
 
 func start(pos):
@@ -50,3 +57,8 @@ func lives_deplated():
 	hide() # Player disappears after depleting all lives
 	# Must be deferred as we can't change physics properties on a physics callback.
 	$CollisionShape2D.set_deferred("disabled", true)
+
+
+func _on_immunity_timeout():
+	isImmune = false
+	$AnimatedSprite2D.material.set("shader_parameter/immune", false) # attiva effetto
