@@ -10,7 +10,7 @@
 
 [sub_resource type="Curve2D" id="Curve2D_7mycd"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 480, 80, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
 
@@ -19,9 +19,11 @@ script = ExtResource("1_h2yge")
 mob_scene = ExtResource("2_1bvp3")
 
 [node name="livesbar" parent="." instance=ExtResource("3_7mycd")]
-offset_right = 392.0
-offset_bottom = 128.0
-scale = Vector2(0.5, 0.5)
+offset_left = 16.0
+offset_top = 21.0
+offset_right = 420.0
+offset_bottom = 149.0
+scale = Vector2(0.25, 0.25)
 
 [node name="Player" parent="." instance=ExtResource("3_lquwl")]
 
@@ -41,6 +43,7 @@ position = Vector2(240, 450)
 curve = SubResource("Curve2D_7mycd")
 
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
+position = Vector2(0, 80)
 
 [node name="HUD" parent="." instance=ExtResource("4_1bvp3")]
 
