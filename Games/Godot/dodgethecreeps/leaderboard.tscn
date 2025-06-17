@@ -16,15 +16,15 @@ offset_right = 480.0
 offset_bottom = 720.0
 script = ExtResource("1_2t7te")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 0
-offset_right = 480.0
-offset_bottom = 720.0
-color = Color(0.212305, 0.212305, 0.212305, 1)
-
 [node name="LeaderboardContainer" type="VBoxContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -240.0
+offset_right = 240.0
+offset_bottom = 488.0
+grow_horizontal = 2
 
 [node name="Leaderboard" type="Label" parent="LeaderboardContainer"]
 custom_minimum_size = Vector2(480, 64)
@@ -40,7 +40,7 @@ autowrap_mode = 2
 custom_minimum_size = Vector2(480, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_oli24")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 32
 text = "AAA"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -50,7 +50,7 @@ autowrap_mode = 2
 custom_minimum_size = Vector2(480, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_oli24")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 32
 text = "AAA"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -60,7 +60,7 @@ autowrap_mode = 2
 custom_minimum_size = Vector2(480, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_oli24")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 32
 text = "AAA"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -70,7 +70,7 @@ autowrap_mode = 2
 custom_minimum_size = Vector2(480, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_oli24")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 32
 text = "AAA"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -80,17 +80,7 @@ autowrap_mode = 2
 custom_minimum_size = Vector2(480, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_oli24")
-theme_override_font_sizes/font_size = 64
-text = "AAA"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="PlayerScore" type="Label" parent="LeaderboardContainer"]
-custom_minimum_size = Vector2(480, 64)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_oli24")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 32
 text = "AAA"
 horizontal_alignment = 1
 vertical_alignment = 1

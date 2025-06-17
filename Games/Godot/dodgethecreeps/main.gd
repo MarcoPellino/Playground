@@ -4,7 +4,7 @@ extends Node
 var score
 
 func _ready():
-	#new_game()
+	$OverlayUI/Leaderboard.hide()
 	pass
 
 func game_over():
@@ -60,5 +60,10 @@ func _on_start_timer_timeout():
 	$ScoreTimer.start()
 
 func _on_hud_goto_leaderboard():
-	var leaderboard_scene = preload("res://leaderboard.tscn").instantiate()
-	$OverlayUI.add_child(leaderboard_scene)
+	#var leaderboard_scene = preload("res://leaderboard.tscn").instantiate()
+	$OverlayUI/Leaderboard.show()
+	$HUD.hide()
+
+func _on_leaderboard_is_hiding() -> void:
+	$OverlayUI/Leaderboard.hide()
+	$HUD.show()

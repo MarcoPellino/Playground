@@ -1,23 +1,41 @@
 [gd_scene load_steps=4 format=3 uid="uid://b7w3pit221hua"]
 
-[ext_resource type="Script" uid="uid://rlpnqgu1wu76" path="res://leaderboard.gd" id="1_eeur3"]
+[ext_resource type="Script" uid="uid://dskpgnypqq2u0" path="res://gameover.gd" id="1_eeur3"]
 [ext_resource type="FontFile" uid="uid://caaul8fffkihu" path="res://fonts/Xolonium-Regular.ttf" id="2_kctv7"]
 [ext_resource type="PackedScene" uid="uid://c88j0nb5pdrqa" path="res://leaderboard.tscn" id="3_2nw6q"]
 
-[node name="VBoxContainer" type="VBoxContainer"]
+[node name="Gameover" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 480.0
-offset_bottom = 159.0
+offset_bottom = 720.0
 script = ExtResource("1_eeur3")
+
+[node name="Leaderboard" parent="." instance=ExtResource("3_2nw6q")]
+layout_mode = 2
+offset_top = 96.0
+
+[node name="PlayerScore" type="Label" parent="."]
+custom_minimum_size = Vector2(480, 64)
+layout_mode = 0
+offset_top = 504.0
+offset_right = 480.0
+offset_bottom = 582.0
+theme_override_fonts/font = ExtResource("2_kctv7")
+theme_override_font_sizes/font_size = 32
+text = "AAA"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Message" type="Label" parent="."]
 custom_minimum_size = Vector2(480, 64)
-layout_mode = 2
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 78.0
 theme_override_fonts/font = ExtResource("2_kctv7")
 theme_override_font_sizes/font_size = 64
 text = "Game over"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
-
-[node name="Leaderboard" parent="." instance=ExtResource("3_2nw6q")]
-layout_mode = 2

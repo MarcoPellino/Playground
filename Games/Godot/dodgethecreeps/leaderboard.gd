@@ -1,5 +1,7 @@
 extends Control
 
+signal isHiding
+
 const SAVE_PATH := "user://leaderboard.save"
 const MAX_ENTRIES := 5
 
@@ -14,11 +16,7 @@ var default_entries := [
 
 func _ready():
 	var leaderboard = load_leaderboard()
-	for i in MAX_ENTRIES:
-		var label_name = "Score%d" % (i + 1)
-		var label = $LeaderboardContainer.get_node(label_name)
-		var entry = leaderboard[i]
-		label.text = "%d. %s - %d" % [i + 1, entry["name"], entry["score"]]
+	update_labels(leaderboard)
 
 func load_leaderboard() -> Array:
 	if FileAccess.file_exists(SAVE_PATH):
@@ -33,6 +31,16 @@ func load_leaderboard() -> Array:
 	else:
 		return default_entries.duplicate()
 
+func update_ui():
+	var leaderboard = load_leaderboard()
+	update_labels(leaderboard)
+
+func update_labels(leaderboardScores):
+	for i in MAX_ENTRIES:
+		var label_name = "Score%d" % (i + 1)
+		var label = $LeaderboardContainer.get_node(label_name)
+		var entry = leaderboardScores[i]
+		label.text = "%d. %s - %d" % [i + 1, entry["name"], entry["score"]]
 
 func _on_back_pressed():
-	queue_free()
+	isHiding.emit()
