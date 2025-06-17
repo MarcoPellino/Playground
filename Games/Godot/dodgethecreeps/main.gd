@@ -5,14 +5,17 @@ var score
 
 func _ready():
 	$OverlayUI/Leaderboard.hide()
-	pass
+	$OverlayUI/Gameover.hide()
 
 func game_over():
 	$Music.stop()
 	$DeathSound.play()
 	$ScoreTimer.stop()
 	$MobTimer.stop()
-	$HUD.show_game_over()
+	await $HUD.show_game_over()
+	$OverlayUI/Gameover.setup(score)
+	$OverlayUI/Gameover.show()
+	$HUD.hide_score()
 	
 func new_game():
 	score = 0
@@ -67,3 +70,8 @@ func _on_hud_goto_leaderboard():
 func _on_leaderboard_is_hiding() -> void:
 	$OverlayUI/Leaderboard.hide()
 	$HUD.show()
+
+func _on_gameover_gameover_is_hiding() -> void:
+	$OverlayUI/Gameover.hide()
+	$HUD.reset_UI()
+	score = 0

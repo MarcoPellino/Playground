@@ -15,11 +15,12 @@ script = ExtResource("1_eeur3")
 layout_mode = 2
 offset_top = 96.0
 
-[node name="PlayerScore" type="Label" parent="."]
-custom_minimum_size = Vector2(480, 64)
+[node name="PlayerScoreLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 0
+offset_left = 296.0
 offset_top = 504.0
-offset_right = 480.0
+offset_right = 472.0
 offset_bottom = 582.0
 theme_override_fonts/font = ExtResource("2_kctv7")
 theme_override_font_sizes/font_size = 32
@@ -39,3 +40,17 @@ text = "Game over"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="PlayerNameInput" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 512.0
+offset_right = 296.0
+offset_bottom = 568.0
+theme_override_fonts/font = ExtResource("2_kctv7")
+theme_override_font_sizes/font_size = 24
+emoji_menu_enabled = false
+middle_mouse_paste_enabled = false
+
+[connection signal="isHiding" from="Leaderboard" to="." method="_on_leaderboard_is_hiding"]
+[connection signal="text_submitted" from="PlayerNameInput" to="." method="_on_player_name_input_text_submitted"]

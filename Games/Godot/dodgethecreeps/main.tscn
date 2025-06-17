@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dy2nc6ysiutm5"]
+[gd_scene load_steps=11 format=3 uid="uid://dy2nc6ysiutm5"]
 
 [ext_resource type="Script" uid="uid://v5tx7oh274yu" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://c2qdipjfj51pv" path="res://mob.tscn" id="2_1bvp3"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://0ipkp7e0x8a4" path="res://livesbar.tscn" id="3_7mycd"]
 [ext_resource type="PackedScene" uid="uid://im08878pq8k4" path="res://player.tscn" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://drseimeyai1fb" path="res://HUD.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://b7w3pit221hua" path="res://gameover.tscn" id="4_kek77"]
 [ext_resource type="AudioStream" uid="uid://vm53xmuf5blj" path="res://art/House In a Forest Loop.ogg" id="6_272bh"]
 [ext_resource type="AudioStream" uid="uid://ybcwekjaa0l4" path="res://art/gameover.wav" id="7_5vw27"]
 
@@ -23,6 +24,8 @@ mob_scene = ExtResource("2_1bvp3")
 layer = 99
 
 [node name="Leaderboard" parent="OverlayUI" instance=ExtResource("3_5vw27")]
+
+[node name="Gameover" parent="OverlayUI" instance=ExtResource("4_kek77")]
 
 [node name="livesbar" parent="." instance=ExtResource("3_7mycd")]
 offset_left = 16.0
@@ -61,6 +64,7 @@ parameters/looping = true
 stream = ExtResource("7_5vw27")
 
 [connection signal="isHiding" from="OverlayUI/Leaderboard" to="." method="_on_leaderboard_is_hiding"]
+[connection signal="gameover_isHiding" from="OverlayUI/Gameover" to="." method="_on_gameover_gameover_is_hiding"]
 [connection signal="game_over" from="livesbar" to="." method="game_over"]
 [connection signal="game_over" from="livesbar" to="Player" method="lives_deplated"]
 [connection signal="hit" from="Player" to="livesbar" method="lose_life"]
