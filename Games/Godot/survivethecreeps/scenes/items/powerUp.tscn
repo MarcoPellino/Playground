@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://46qt4dspnj3a"]
+
+[ext_resource type="Script" uid="uid://c1yiv5j818nfh" path="res://scenes/items/power_up.gd" id="1_ib11r"]
+[ext_resource type="Texture2D" uid="uid://3ee1hwtva5bh" path="res://assets/sprites/skills/skillTimer.png" id="1_k8l8o"]
+[ext_resource type="Texture2D" uid="uid://dbikr8vc1krh1" path="res://assets/sprites/coins-solid.svg" id="3_kevyc"]
+
+[node name="PowerUp" type="Control"]
+custom_minimum_size = Vector2(600, 120)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ib11r")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(56, 48)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_k8l8o")
+
+[node name="Text" type="Label" parent="."]
+layout_mode = 0
+offset_left = 120.0
+offset_right = 480.0
+offset_bottom = 40.0
+text = "Title"
+
+[node name="CostIcon" type="Sprite2D" parent="."]
+position = Vector2(496, 16)
+scale = Vector2(0.03125, 0.03125)
+texture = ExtResource("3_kevyc")
+
+[node name="Cost" type="Label" parent="."]
+layout_mode = 0
+offset_left = 512.0
+offset_right = 552.0
+offset_bottom = 28.0
+text = "100"
+
+[node name="Description" type="Label" parent="."]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 480.0
+offset_bottom = 96.0
+text = "Description"

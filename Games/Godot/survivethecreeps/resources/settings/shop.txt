@@ -1,0 +1,7 @@
+name,description,price,icon_path
+Missile,A powerful projectile,100,res://assets/sprites/skills/missile.png
+Shield,Protects your ship for 60 seconds,75,res://assets/sprites/skills/shield.png
+SpeedBoost,Increases speed,50,res://assets/sprites/skills/speed.png
+Big missile,A very powerful projectile,200,res://assets/sprites/skills/missile.png
+Big SpeedBoost,Greatly increases speed,100,res://assets/sprites/skills/speed.png
+Huge SpeedBoost,Enourmsly increases speed,1000,res://assets/sprites/skills/speed.png
